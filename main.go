@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/fclaude/dicesum/generator"
 	"github.com/gin-gonic/gin"
+	"os"
 )
 
 func ap(c string) string {
@@ -26,6 +27,11 @@ func cleanName(name string) string {
 }
 
 func main() {
+	mode := gin.ReleaseMode
+	if len(os.Args) > 1 {
+		mode = os.Args[1]
+	}
+	gin.SetMode(mode)
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
