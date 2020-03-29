@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/fclaude/dicesum/generator"
+	"github.com/fclaude/dicemath/generator"
 	"github.com/gin-gonic/gin"
 	"os"
 )
