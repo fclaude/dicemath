@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/fclaude/dicemath/generator"
 	"github.com/gin-gonic/gin"
+	"log"
 	"os"
 )
 
@@ -17,6 +18,7 @@ const MaxName = 30
 
 func cleanName(name string) string {
 	if len(name) > MaxName {
+		log.Printf("Got a name that is too long: %d", len(name))
 		name = name[:MaxName]
 	}
 	res := ""
