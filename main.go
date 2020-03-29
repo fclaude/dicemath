@@ -104,7 +104,7 @@ const page = `
 		<div class="row">
 			<form action="/generate/" method="POST">
 			  <div class="form-group">
-				<label for="name">Child Name:</label>
+				<label for="name">Child Name (Optional):</label>
 				<input type="text" name="name" class="form-control" id="text">
 			  </div>
 			  <button type="submit" class="btn btn-default btn-primary">Generate</button>
