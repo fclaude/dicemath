@@ -1,4 +1,4 @@
-module github.com/fclaude/dicesum
+module github.com/fclaude/dicemath
 
 go 1.14
 
