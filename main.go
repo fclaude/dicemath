@@ -14,7 +14,7 @@ func ap(c string) string {
 	return "'s"
 }
 
-const MaxName = 30
+const MaxName = 20
 
 func cleanName(name string) string {
 	if len(name) > MaxName {
@@ -112,7 +112,7 @@ const page = `
 			<form action="/generate/" method="POST">
 			  <div class="form-group">
 				<label for="name">Child Name (Optional):</label>
-				<input type="text" name="name" class="form-control" id="text">
+				<input type="text" name="name" class="form-control" id="name" maxlength="10">
 			  </div>
 			  <button type="submit" class="btn btn-default btn-primary">Generate</button>
 			</form> 
