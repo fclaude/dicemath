@@ -96,7 +96,7 @@ const page = `
 		<div class="row">
 			<div class="title">
 				<h1>Dice-math worksheet generator</h1>	
-				<p class="lead">Generate a random dice addition worksheet for your kid!</p>
+				<p class="lead">Generate a random dice addition worksheet for your child!</p>
 			</div>
 		</div>
 	</div>
