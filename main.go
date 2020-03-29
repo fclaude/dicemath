@@ -117,7 +117,7 @@ const page = `
 				<p>Built to keep my children busy, hope it helps you too :)</p>
 		</div>
 		<div class="row">
-				<p>For more random stuff, you can check <a href="https://fclaude.recoded.cl/">my blog</a> out!</p>
+				<p>For more random stuff, you can check out <a href="https://fclaude.recoded.cl/">my blog</a>!</p>
 		</div>
 	</div>
 
