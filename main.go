@@ -13,7 +13,12 @@ func ap(c string) string {
 	return "'s"
 }
 
+const MaxName = 30
+
 func cleanName(name string) string {
+	if len(name) > MaxName {
+		name = name[:MaxName]
+	}
 	res := ""
 	for _, c := range name {
 		if (c == ' ') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') {
