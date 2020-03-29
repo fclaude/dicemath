@@ -2,6 +2,6 @@ FROM thomasweise/docker-texlive-full:latest
 
 EXPOSE 8080
 
-COPY dicesum /dicesum
+COPY dicemath /dicemath
 
-CMD ["/dicesum"]
+CMD ["/dicemath"]
