@@ -17,7 +17,7 @@ func GeneratePDF(name, operation string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	//defer os.RemoveAll(dir)
+	defer os.RemoveAll(dir)
 
 	// the template is hardcoded, can ignore the error
 	fileContent, err := template.New("sheet").Delims("[[", "]]").Parse(sheetTemplate)
