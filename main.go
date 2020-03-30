@@ -33,6 +33,16 @@ func cleanName(name string) string {
 	return res + ap(string(res[len(res) - 1]))
 }
 
+func getOperation(op string) string {
+	switch op {
+	case "addition": return "+"
+	case "multiplication": return "$\\times$"
+	case "subtraction": return "-"
+	case "division": return "/"
+	default: return "?"
+	}
+}
+
 func main() {
 	mode := gin.ReleaseMode
 	if len(os.Args) > 1 {
@@ -52,7 +62,8 @@ func main() {
 
 	r.POST("/generate/", func(c *gin.Context) {
 		name := cleanName(c.PostForm("name"))
-		pdfData, err := generator.GeneratePDF(name)
+		operation := getOperation(c.PostForm("operation"))
+		pdfData, err := generator.GeneratePDF(name, operation)
 		if err != nil {
 			c.AbortWithError(500, err)
 			return
@@ -67,17 +78,6 @@ const page = `
 <!doctype html>
 <html lang="en">
   <head>
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-162008850-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-162008850-1');
-</script>
-
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
@@ -103,16 +103,23 @@ const page = `
 		<div class="row">
 			<div class="title">
 				<h1>Dice-math worksheet generator</h1>	
-				<p class="lead">Generate a random dice addition worksheet for your child!</p>
+				<p class="lead">Generate a random dice-math worksheet for your child!</p>
 			</div>
 		</div>
 	</div>
 	<div class="container">
 		<div class="row">
-			<form action="/generate/" method="POST">
+			<form action="/generate/" method="POST" id="generate-form">
 			  <div class="form-group">
 				<label for="name">Child Name (Optional):</label>
 				<input type="text" name="name" class="form-control" id="name" maxlength="20">
+              	<label for="operation">Operation:</label>
+				<select id="operation" name="operation">
+				  <option value="addition">Addition</option>
+				  <option value="multiplication">Multiplication</option>
+				  <option value="subtraction">Subtraction</option>
+				  <option value="division">Division</option>
+				</select> 
 			  </div>
 			  <button type="submit" class="btn btn-default btn-primary">Generate</button>
 			</form> 
@@ -128,6 +135,51 @@ const page = `
 		</div>
 	</div>
 
+<script>
+// From Google Analytics documentation
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-162008850-1', 'auto');
+ga('send', 'pageview');
+
+ga('send', 'event', 'Index visit', 'submit', {});
+
+function createFunctionWithTimeout(callback, opt_timeout) {
+  var called = false;
+  function fn() {
+    if (!called) {
+      called = true;
+      callback();
+    }
+  }
+  setTimeout(fn, opt_timeout || 1000);
+  return fn;
+}
+
+// Gets a reference to the form element, assuming
+// it contains the id attribute "generate-form".
+var form = document.getElementById('generate-form');
+
+// Adds a listener for the "submit" event.
+form.addEventListener('submit', function(event) {
+
+  // Prevents the browser from submitting the form
+  // and thus unloading the current page.
+  event.preventDefault();
+
+  // Sends the event to Google Analytics and
+  // resubmits the form once the hit is done.
+  ga('send', 'event', 'Generate Sheet', document.getElementById('operation').value, {
+    hitCallback: createFunctionWithTimeout(function() {
+      form.submit();
+    })
+  });
+});
+
+</script>
   </body>
 </html>
 `
