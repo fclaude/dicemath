@@ -1,3 +1,4 @@
+{% raw %}
 # Dicemath - a small Go service for keeping kids busy
 
 I know this may not be the most fun activity for kids, but it turns out that my 5-year-old likes to do simple addition worksheets. Now that many of us are working from home with our kids, which is mostly trying to work from home while our kids prevent it, we have to take anything we can to keep the little ones busy and entertained.
@@ -482,3 +483,5 @@ ssh fclaude@dicemath.recoded.cl "sudo service dicemath restart"
 And now, I only need to run deploy.sh whenever I change something in the code, it uploads the new binary as dicemath.new, moves the one that is running, renames dicemath.new to dicemath, and restarts the service. The restart will now spin up the new binary.
 
 Note that I’m developing using Linux, if you were in OSX or Windows, you would need to cross-compile. Cross-compiling is easy in Go, just add `GOOS=linux GOARCH=amd64` in front of the go build command, and your binary will be built for Linux.
+
+{% endraw %}
