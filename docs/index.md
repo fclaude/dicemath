@@ -18,7 +18,7 @@ We will visit the code top-down here. The truth is that I wrote it the other way
 
 Let's start with the webpage:
 
-```html
+{% highlight html %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -78,11 +78,11 @@ Let's start with the webpage:
   </div>
   </body>
 </html>
-```
+{% endhighlight %}
 
 This sends a post to /generate/ with the name and the operation. The service will respond to that post request with a PDF. We can start by writing the main binary, with comments:
 
-```go
+{% highlight go %}
 package main
 
 import (
@@ -178,11 +178,11 @@ func main() {
 }
 
 const page = `HTML for the page` // I want one single binary, and pakr seems an overkill
-```
+{% endhighlight %}
 
 So this is our service. We only need to implement the code that generates the PDF. For this I’ll do the same thing as the HTML file, I’ll embed a Latex template into my code:
 
-```latex
+{$highlight latex %}
 \documentclass[12pt,letter]{article}
 
 \usepackage{fullpage}
@@ -220,13 +220,13 @@ So this is our service. We only need to implement the code that generates the PD
 [[end]]
 
 \end{document}
-```
+{% endhighlight %}
 
 This latex template defines a command childsum that takes two numbers and represents them as two dice operated. We have four groups of exercises, and each is a set of childsums. Now let’s use this from within our code, I put this template as a string named sheetTemplate.
 
 We can start with some structures:
 
-```go
+{% highlight go %}
 // One exercise is two numbers
 type exercise struct {
 	A int
@@ -250,11 +250,11 @@ type exerciseGroup struct {
 	Operation string
 	Separator string
 }
-```
+{% endhighlight %}
 
 We will assume for now that the exerciseGroup is built and will focus on generating the PDF:
 
-```go
+{% highlight go %}
 const fileName = "worksheet.tex"
 const fileNamePdf = "worksheet.pdf"
 
@@ -300,11 +300,11 @@ func GeneratePDF(name, operation string) ([]byte, error) {
 	pdf := path.Join(dir, fileNamePdf)
 	return ioutil.ReadFile(pdf)
 }
-```
+{% endhighlight %}
 
 And that’s almost it. We are missing the generateGroups function:
 
-```go
+{% highlight go %}
 // This function returns true is the exercise is valid for the given operation.
 // For example, we will not consider valid 3-5; at least my son doesn't handle
 // negative numbers yet. For divisions we want integer results. And overall, we
@@ -375,7 +375,7 @@ func generateGroups(name, operation string) exerciseGroup {
 		Group4:    group4,
 	}
 }
-```
+{% endhighlight %}
 
 And now we are done. Our service is ready … almost at least. We need to deploy it.
 
@@ -386,16 +386,16 @@ I deployed this in digitalocean. I run this as a service, in port 8080, and then
 
 I started setting up Nginx:
 
-```bash
+{% highlight bash %}
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get update
 sudo apt-get install certbot python-certbot-nginx
 sudo certbot --nginx
-```
+{% endhighlight %}
 
 Then edited /etc/nginx/sites-enabled/default:
 
-```
+{% highlight %}
 server {
     # managed by Certbot
     server_name dicemath.recoded.cl; 
@@ -423,11 +423,11 @@ server {
     server_name dicemath.recoded.cl;
     return 404;
 }
-```
+{% endhighlight %}
 
 The I added my service as /lib/systemd/system/dicemath.service:
 
-```
+{% highligh %}
 [Unit]
 Description=Dicemath service
 ConditionPathExists=/home/fclaude/dicemath/dicemath
@@ -457,18 +457,18 @@ SyslogIdentifier=dicemath
  
 [Install]
 WantedBy=multi-user.target
-```
+{% endhighlight %}
 
 The next step was to create the dicemath user and enable the service by running:
 
-```bash
+{% highligh bash %}
 sudo useradd dicemath -s /sbin/nologin -M
 sudo systemctl enable dicemath.service
-```
+{% endhighlight %}
 
 And finally, I setup my machine to upload the binary and restart the service whenever I wanted to deploy. I called this file deploy.sh, and it lives in the root of my project:
 
-```bash
+{% highlight bash %}
 #!/bin/sh
 
 go build .
@@ -477,7 +477,7 @@ scp dicemath fclaude@dicemath.recoded.cl:/home/fclaude/dicemath/dicemath.new
 ssh fclaude@dicemath.recoded.cl "mv /home/fclaude/dicemath/dicemath /home/fclaude/dicemath/dicemath.old"
 ssh fclaude@dicemath.recoded.cl "mv /home/fclaude/dicemath/dicemath.new /home/fclaude/dicemath/dicemath"
 ssh fclaude@dicemath.recoded.cl "sudo service dicemath restart"
-```
+{% endhighlight %}
 
 And now, I only need to run deploy.sh whenever I change something in the code, it uploads the new binary as dicemath.new, moves the one that is running, renames dicemath.new to dicemath, and restarts the service. The restart will now spin up the new binary.
 
