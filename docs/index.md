@@ -7,7 +7,7 @@ I can't complain. Working from home with two little kids is hard, but the truth 
 
 Back to the article, since my son likes to do worksheets where he can count the result of the additions, I built a small website that generates the worksheet. Every morning I print him one sheet, and he goes to either do the exercises or runs away from me because I'll bug him with something he doesn't want to do at the moment, win-win.
 
-You can check the site here. I'll spend the rest of the article explaining how I built and set the site up. It's a small example you can go through in one day, and it's always fun to pause things and do something different. You can find the whole project here (no, I did not write any tests; this was a one-day fun project; that's it).
+You can check the site [here](https://fclaude.recoded.cl/2020/04/dicemat-go-service/). I'll spend the rest of the article explaining how I built and set the site up. It's a small example you can go through in one day, and it's always fun to pause things and do something different. You can find the whole project [here](https://github.com/fclaude/dicemath/) (no, I did not write any tests; this was a one-day fun project; that's it).
 
 ## The service
 
